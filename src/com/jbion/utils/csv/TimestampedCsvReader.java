@@ -12,6 +12,9 @@ import java.io.IOException;
  */
 public abstract class TimestampedCsvReader extends CsvReader {
 
+    private final static int DEFAULT_BUFFER_SIZE = 1024;
+    private final int rowBufferSize;
+
     /**
      * Opens a new {@code TimestampedCsvReader} for the specified file.
      * 
@@ -24,7 +27,27 @@ public abstract class TimestampedCsvReader extends CsvReader {
      */
     public TimestampedCsvReader(String filename) throws FileNotFoundException,
             Csv.NotACsvFileException {
+        this(filename, DEFAULT_BUFFER_SIZE);
+    }
+
+    /**
+     * Opens a new {@code TimestampedCsvReader} for the specified file.
+     * 
+     * @param filename
+     *            The path to the file to read.
+     * @param rowBufferSize
+     *            The maximum number of characters contained in a row. A buffer of
+     *            this size is allocated to be able to go back one row during a call
+     *            to {@link #skipToReachTimestamp(long)}.
+     * @throws FileNotFoundException
+     *             If the specified file does not exist.
+     * @throws Csv.NotACsvFileException
+     *             If the specified file is not a CSV file.
+     */
+    public TimestampedCsvReader(String filename, int rowBufferSize) throws FileNotFoundException,
+            Csv.NotACsvFileException {
         super(filename);
+        this.rowBufferSize = rowBufferSize;
     }
 
     /**
@@ -49,16 +72,24 @@ public abstract class TimestampedCsvReader extends CsvReader {
      *             If any I/O error occurs.
      */
     public void skipToReachTimestamp(long timestamp) throws IOException {
-        long currTimestamp;
-        in.mark(200);
         String[] line;
-        while ((line = readRow()) != null) {
-            currTimestamp = extractTimestamp(line);
-            if (currTimestamp >= timestamp) {
-                in.reset();
-                break;
+        try {
+            long currTimestamp;
+            in.mark(rowBufferSize);
+            while ((line = readRow()) != null) {
+                currTimestamp = extractTimestamp(line);
+                if (currTimestamp >= timestamp) {
+                    in.reset();
+                    return;
+                }
+                in.mark(rowBufferSize);
             }
-            in.mark(200);
+        } catch (IOException e) {
+            if (e.getMessage().equals("Mark invalid")) {
+                throw new IOException("Last read row exceeded buffer size.", e);
+            } else {
+                throw e;
+            }
         }
     }
 }
