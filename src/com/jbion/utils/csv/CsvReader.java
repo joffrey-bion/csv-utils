@@ -15,6 +15,7 @@ import com.jbion.utils.csv.Csv.NotACsvFileException;
  */
 public class CsvReader {
 
+    protected String filename;
     protected BufferedReader in;
     protected String[] lastReadRow;
 
@@ -31,6 +32,7 @@ public class CsvReader {
     public CsvReader(String filename) throws FileNotFoundException, Csv.NotACsvFileException {
         Csv.checkExtension(filename);
         in = new BufferedReader(new FileReader(filename));
+        this.filename = filename;
     }
 
     /**
@@ -45,13 +47,17 @@ public class CsvReader {
      * @see #readRows(int)
      */
     public String[] readRow() throws IOException {
-        String line = in.readLine();
-        if (line == null) {
-            lastReadRow = null;
-        } else {
-            lastReadRow = line.split(Csv.CSV_COL_SEP);
+        try {
+            String line = in.readLine();
+            if (line == null) {
+                lastReadRow = null;
+            } else {
+                lastReadRow = line.split(Csv.CSV_COL_SEP);
+            }
+            return lastReadRow;
+        } catch (IOException e) {
+            throw new IOException(e.getMessage() + " (file: '" + filename + "')", e);
         }
-        return lastReadRow;
     }
 
     /**

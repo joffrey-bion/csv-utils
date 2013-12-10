@@ -86,9 +86,9 @@ public abstract class TimestampedCsvReader extends CsvReader {
             }
         } catch (IOException e) {
             if (e.getMessage().equals("Mark invalid")) {
-                throw new IOException("Last read row exceeded buffer size.", e);
+                throw new IOException("Last read row exceeded buffer size. (file: '" + filename + "')", e);
             } else {
-                throw e;
+                throw new IOException(e.getMessage() + " (file: '" + filename + "')", e);
             }
         }
     }
