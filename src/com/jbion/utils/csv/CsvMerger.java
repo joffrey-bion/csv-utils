@@ -48,13 +48,13 @@ public class CsvMerger {
                 // reading the first file, the headers have to be stored
                 header = reader.readRow();
                 if (header == null) {
-                    throw new IOException("A source file is empty ('" + source + "'.");
+                    throw new IOException("The file '" + source + "' is empty.");
                 }
                 writer.writeRow(header);
             } else {
                 // the headers have to be the same as the first file's headers
                 if (!equals(header, reader.readRow())) {
-                    throw new RuntimeException("some source files don't have the same headers ("
+                    throw new RuntimeException("Some source files don't have the same headers ("
                             + source + ")");
                 }
             }
