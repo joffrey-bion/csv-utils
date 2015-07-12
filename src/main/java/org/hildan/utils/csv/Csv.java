@@ -9,7 +9,8 @@ package org.hildan.utils.csv;
 public class Csv {
 
     private static final String CSV_EXTENSION = ".csv";
-    protected static final String CSV_COL_SEP = ",";
+    
+    protected static final String CSV_DEFAULT_COL_SEP = ",";
 
     /**
      * Checks whether the given {@code filename} ends with the CSV extension.
