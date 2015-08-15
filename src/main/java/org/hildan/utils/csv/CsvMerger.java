@@ -3,9 +3,8 @@ package org.hildan.utils.csv;
 import java.io.IOException;
 
 /**
- * A {@code CsvMerger} is used to merge CSV files with the same column headers into a
- * single file.
- * 
+ * A {@code CsvMerger} is used to merge CSV files with the same column headers into a single file.
+ *
  * @author <a href="mailto:joffrey.bion@gmail.com">Joffrey BION</a>
  */
 public class CsvMerger {
@@ -14,7 +13,7 @@ public class CsvMerger {
 
     /**
      * Creates a new CSV merger, setting the destination file.
-     * 
+     *
      * @param destination
      *            The destination filename.
      * @throws IOException
@@ -27,9 +26,9 @@ public class CsvMerger {
     }
 
     /**
-     * Merges the specified CSV source files into the destination file given to the
-     * constructor. The headers of the source files must exist and match.
-     * 
+     * Merges the specified CSV source files into the destination file given to the constructor. The
+     * headers of the source files must exist and match.
+     *
      * @param csvSources
      *            An array of filenames.
      * @throws IOException
@@ -46,14 +45,15 @@ public class CsvMerger {
                 // reading the first file, the headers have to be stored
                 header = reader.readRow();
                 if (header == null) {
+                    reader.close();
                     throw new IOException("The file '" + source + "' is empty.");
                 }
                 writer.writeRow(header);
             } else {
                 // the headers have to be the same as the first file's headers
                 if (!equals(header, reader.readRow())) {
-                    throw new RuntimeException("Some source files don't have the same headers ("
-                            + source + ")");
+                    reader.close();
+                    throw new RuntimeException("Some source files don't have the same headers (" + source + ")");
                 }
             }
             // copy the rows
@@ -68,13 +68,13 @@ public class CsvMerger {
 
     /**
      * Returns whether the strings in each array match.
-     * 
+     *
      * @param h1
      *            First array of {@code String}s
      * @param h2
      *            Second array of {@code String}s
-     * @return {@code true} if the arrays are of same length and {@code h1[i]} equals
-     *         {@code h2[i]} for each i, {@code false} otherwise.
+     * @return {@code true} if the arrays are of same length and {@code h1[i]} equals {@code h2[i]}
+     *         for each i, {@code false} otherwise.
      */
     private static boolean equals(String[] h1, String[] h2) {
         if (h1.length != h2.length)
