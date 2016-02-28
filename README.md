@@ -6,3 +6,7 @@ CsvUtils
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/joffrey-bion/csv-utils/blob/master/LICENSE)
 
 Provides some helper classes to handle CSV files easily.
+
+## License
+
+Code released under [the MIT license](https://github.com/joffrey-bion/csv-utils/blob/master/LICENSE)
