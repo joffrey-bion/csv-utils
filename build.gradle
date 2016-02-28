@@ -3,10 +3,12 @@ plugins { id "com.jfrog.bintray" version "1.0" }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'idea'
 
 group = 'org.hildan.utils'
 version = '1.0'
-sourceCompatibility = '1.6'
+sourceCompatibility = 1.6
+description = 'Various classes making CSV files manipulation easier.'
 
 repositories { mavenCentral() }
 
@@ -38,7 +40,7 @@ bintray {
     pkg {
         repo = project.bintrayRepoLibs // taken from gradle.properties
         name = project.name
-        desc = 'Various classes making CSV files manipulation easier.'
+        desc = project.description
         labels = ['csv', 'reader', 'writer', 'merger']
 
         String githubRepoName = project.name
@@ -46,7 +48,10 @@ bintray {
         issueTrackerUrl = 'https://github.com/joffrey-bion/' + githubRepoName + '/issues'
         vcsUrl = 'https://github.com/joffrey-bion/' + githubRepoName + '.git'
 
-        licenses = ['MIT']        
-        version { gpg { sign = true } }
+        licenses = ['MIT']
+        version {
+            vcsTag = 'v' + project.version
+            gpg { sign = true }
+        }
     }
 }
