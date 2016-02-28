@@ -7,7 +7,6 @@ apply plugin: 'idea'
 
 group = 'org.hildan.utils'
 version = '1.0'
-sourceCompatibility = 1.6
 description = 'Various classes making CSV files manipulation easier.'
 
 repositories { mavenCentral() }
