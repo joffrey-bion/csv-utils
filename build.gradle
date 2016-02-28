@@ -31,14 +31,14 @@ artifacts {
 }
 
 bintray {
-    user = project.bintrayUsername // taken from gradle.properties
-    key = project.bintrayApiKey // taken from gradle.properties
+    user = project.hasProperty('bintrayUsername') ? project.bintrayUsername : ''
+    key = project.hasProperty('bintrayApiKey') ? project.bintrayApiKey : ''
     configurations = ['archives']
 
     publish = true // the version should be auto published after an upload
 
     pkg {
-        repo = project.bintrayRepoLibs // taken from gradle.properties
+        repo = project.hasProperty('bintrayRepoLibs') ? project.bintrayRepoLibs : ''
         name = project.name
         desc = project.description
         labels = ['csv', 'reader', 'writer', 'merger']
