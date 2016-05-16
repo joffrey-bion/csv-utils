@@ -12,13 +12,11 @@ Provides some helper classes to handle CSV files easily.
 ### Add the dependency in Gradle
 
     repositories {
-        maven {
-            url  "http://dl.bintray.com/joffrey-bion/maven"
-        }
+        jcenter()
     }
 
     dependencies {
-        compile 'org.hildan.utils:csv-utils:0.9'
+        compile 'org.hildan.utils:csv-utils:1.1'
     }
 
 ## License
